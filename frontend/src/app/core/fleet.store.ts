@@ -186,10 +186,10 @@ export class FleetStore {
       this.events.next(event);
       const incidents = this.evaluator.evaluate(this.confirmedRules, event);
       if (incidents.length) {
-        this.incidents.update((current) =>
-          [...incidents, ...current].slice(0, CONFIG.incidentLimit),
+        this.pendingIncidents = [...incidents, ...this.pendingIncidents].slice(
+          0,
+          CONFIG.incidentLimit,
         );
-        this.notice.set(`${incidents[0].rule} fired for ${event.serviceId}`);
       }
     }
   }

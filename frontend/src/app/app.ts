@@ -30,6 +30,11 @@ import { FleetStore } from './core/fleet.store';
     </header>
     <main>
       @if (auth.user()) {
+        @if (store.error()) {
+          <p role="alert">
+            {{ store.error() }} <button (click)="store.retry()">Retry fleet connection</button>
+          </p>
+        }
         @if (store.notice()) {
           <p role="status" class="notice">
             {{ store.notice() }}
