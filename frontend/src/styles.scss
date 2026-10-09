@@ -1,0 +1,184 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+$fleet-primary: map.merge(
+  mat.$azure-palette,
+  (
+    40: #246d91,
+    50: #3e85aa,
+    60: #5c9fc5,
+  )
+);
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: $fleet-primary,
+        tertiary: mat.$cyan-palette,
+      ),
+      typography: Arial,
+      density: -2,
+    )
+  );
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f6f7f8;
+  color: #202b35;
+  font:
+    14px/1.5 Arial,
+    sans-serif;
+}
+header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 14px 24px;
+  background: white;
+  border-bottom: 1px solid #cdd4da;
+}
+nav {
+  display: flex;
+  gap: 16px;
+}
+main,
+footer {
+  max-width: 1400px;
+  padding: 20px 24px;
+  margin: auto;
+}
+a {
+  color: #145c87;
+}
+h1 {
+  font-size: 24px;
+}
+h2 {
+  font-size: 18px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+input,
+select,
+button {
+  font: inherit;
+  min-height: 34px;
+  padding: 5px 9px;
+}
+input,
+select {
+  border: 1px solid #8997a3;
+  border-radius: 3px;
+  background: white;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
+:focus-visible {
+  outline: 3px solid #1779af;
+  outline-offset: 2px;
+}
+.stack {
+  display: grid;
+  gap: 14px;
+}
+.narrow {
+  max-width: 430px;
+}
+.table-header,
+app-fleet-row {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr 1.3fr;
+  align-items: center;
+  min-width: 760px;
+}
+.table-header {
+  background: #e1e8ed;
+  padding: 10px;
+  font-weight: bold;
+}
+cdk-virtual-scroll-viewport {
+  height: 480px;
+  background: white;
+  border: 1px solid #cad3da;
+}
+app-fleet-row {
+  height: 40px;
+  padding: 0 10px;
+  border-bottom: 1px solid #e9edf0;
+}
+.stale-row {
+  background: #fff2d3;
+}
+.warning {
+  color: #855400;
+  font-weight: bold;
+}
+.flash {
+  animation: flash 0.8s ease-out;
+}
+@keyframes flash {
+  from {
+    background: #ffc85a;
+  }
+  to {
+    background: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flash {
+    animation: none;
+    outline: 2px solid #bd7900;
+  }
+}
+.chart {
+  height: 200px;
+}
+section,
+fieldset {
+  background: white;
+  border: 1px solid #cad3da;
+  padding: 12px;
+  margin: 12px 0;
+}
+[role='alert'] {
+  color: #942b23;
+}
+.notice {
+  background: #e2eff7;
+  padding: 12px;
+}
+.compact main {
+  padding-top: 8px;
+}
+@media (max-width: 700px) {
+  main,
+  footer {
+    padding: 12px;
+  }
+  header {
+    gap: 10px;
+    padding: 12px;
+  }
+  [role='table'] {
+    overflow-x: auto;
+  }
+  cdk-virtual-scroll-viewport {
+    min-width: 760px;
+  }
+}
