@@ -178,8 +178,8 @@ export class Detail {
         const key = Math.floor(point.ts / 1000);
         if (live || !seconds.has(key)) seconds.set(key, point);
       };
-      const subscription = this.store.events.subscribe((e) => {
-        if (e.serviceId === id) add(e, true);
+      const subscription = this.store.watchService(id).subscribe((points) => {
+        points.forEach((point) => add(point, true));
       });
       const reset = this.store.resetHistory.subscribe(() => this.reload.update(this.increment));
       const timer = setInterval(() => {

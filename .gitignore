@@ -9,4 +9,3 @@ __pycache__/
 coverage/
 .env
 out-tsc/
-*.[mM][dD]

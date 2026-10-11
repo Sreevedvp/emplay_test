@@ -71,6 +71,8 @@ export const CONFIG = {
   upgradeMs: 30000,
   pollMs: 2000,
   renderMs: 250,
+  workerCheckMs: 500,
+  replayBatch: 500,
   chartMs: 1000,
   chartPoints: 300,
   windowMs: 900000,

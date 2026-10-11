@@ -1,6 +1,11 @@
-import { ApiClient } from './api';
 import { CONFIG, Snapshot } from './models';
 import { TransportKind } from './algorithms';
+export interface StreamApi {
+  session: { accessToken: string } | null;
+  refresh(rejectedToken: string): Promise<void>;
+  request<T>(path: string, init?: RequestInit, signal?: AbortSignal): Promise<T>;
+  openStream(path: string, signal: AbortSignal): Promise<Response>;
+}
 export interface TransportSink {
   opened(): void;
   message(raw: string): void;
@@ -12,7 +17,7 @@ export interface Transport {
 }
 export type TransportFactory = (kind: TransportKind, sink: TransportSink) => Transport;
 /** Factories contain wire-specific details; the coordinator consumes this interface only. */
-export function createTransportFactory(api: ApiClient): TransportFactory {
+export function createTransportFactory(api: StreamApi): TransportFactory {
   return (kind, sink) => {
     let closed = false;
     const abort = new AbortController();

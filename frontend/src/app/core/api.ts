@@ -37,7 +37,7 @@ export class ApiClient {
       { method: 'POST', body: JSON.stringify({ email, password }) },
       undefined,
       false,
-    );
+);
     this.lifetime = new AbortController();
     this.session = session;
     this.onSession(session);
@@ -72,13 +72,18 @@ export class ApiClient {
     }
     return this.refreshPromise;
   }
-  async request<T>(path: string, init: RequestInit = {}, signal?: AbortSignal): Promise<T> {
+  async request<T>(
+    path: string,
+    init: RequestInit = {},
+    signal?: AbortSignal,
+    responseType: 'json' | 'buffer' = 'json',
+  ): Promise<T> {
     const combined = AbortSignal.any([this.lifetime.signal, ...(signal ? [signal] : [])]);
     const method = init.method ?? 'GET';
     const key = new Headers(init.headers).has('Idempotency-Key');
     for (let attempt = 1; ; attempt++) {
       try {
-        return await this.raw<T>(path, init, combined, true);
+        return await this.raw<T>(path, init, combined, true, responseType);
       } catch (error) {
         if (combined.aborted) throw error;
         const status = error instanceof ApiError ? error.status : 0;
@@ -113,6 +118,7 @@ export class ApiClient {
     init: RequestInit,
     signal: AbortSignal | undefined,
     authenticated: boolean,
+    responseType: 'json' | 'buffer' = 'json',
   ): Promise<T> {
     const token = this.session?.accessToken ?? '';
     const send = async (access: string): Promise<T> => {
@@ -142,7 +148,10 @@ export class ApiClient {
           wait,
         );
       }
-      return response.status === 204 ? (undefined as T) : ((await response.json()) as T);
+      if (response.status === 204) return undefined as T;
+      return (
+        responseType === 'buffer' ? await response.arrayBuffer() : await response.json()
+      ) as T;
     };
     try {
       return await send(token);

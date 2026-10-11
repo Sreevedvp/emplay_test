@@ -55,6 +55,7 @@ import { FleetStore } from './core/fleet.store';
       <footer>
         <details>
           <summary>Stream diagnostics</summary>
+          <p>Processing: Web Worker · display batches every 250 ms</p>
           <pre>{{ store.counters() | json }}</pre>
           <p>
             Reordered counts arrivals ahead of the cursor. Replay fills confirmed gaps. Snapshot
