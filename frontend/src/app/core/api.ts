@@ -37,7 +37,7 @@ export class ApiClient {
       { method: 'POST', body: JSON.stringify({ email, password }) },
       undefined,
       false,
-);
+    );
     this.lifetime = new AbortController();
     this.session = session;
     this.onSession(session);
